@@ -1,6 +1,0 @@
----
-public_key: "pub.key"
-server_username: "ubuntu"
-app_version: "v1.7.9"
-domain: "a.domain.com"
-warp_account: "warp token"

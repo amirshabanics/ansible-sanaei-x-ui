@@ -7,4 +7,6 @@
 
 - ansible.builtin.import_playbook: warp.yml
   tags: warp
-  
+
+- ansible.builtin.import_playbook: sanaei_xui.yml
+  tags: sanaei

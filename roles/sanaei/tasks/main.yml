@@ -1,0 +1,37 @@
+---
+- name: Download sanaei xui
+  get_url:
+    url: "{{ sanaei_xui_url }}"
+    dest: /tmp/sanaei.sh
+    mode: 755
+
+- name: Install sanaei xui
+  become: true
+  expect:
+    command: "/tmp/sanaei.sh"
+    echo: true
+    responses:
+      - "y"
+      - "{{ sanaei_xui_username }}"
+      - "{{ sanaei_xui_password }}"
+      - "{{ sanaei_xui_port }}"
+# implement ban and warp plus comming soon:)
+# - name: Run x-ui command (first set of inputs)
+#   become: true
+#   become_user: root
+#   expect:
+#     command: "x-ui"
+#     echo: true
+#     responses:
+#       - "17"
+#       - "{{ warp_account }}"
+# - name: Run x-ui command (first set of inputs)
+#   become: true
+#   become_user: root
+#   expect:
+#     command: "x-ui"
+#     echo: true
+#     responses:
+#       - "17"
+#       - "{{ warp_account }}"
+
