@@ -1,0 +1,44 @@
+---
+- name: Allow SSH Port
+  become: true
+  ufw:
+    rule: allow
+    port: "{{ ansible_port | default(22) }}"
+
+- name: Allow TCP Allowed Ports
+  become: true
+  ufw:
+    rule: "allow"
+    proto: "tcp"
+    to_port: "{{ item }}"
+  with_items: "{{ firewall_allowed_ports }}"
+
+- name: Set default firewall behavior to denial
+  become: true
+  ufw:
+    default: "deny"
+
+# ufw supports connection rate limiting, which is useful for protecting
+# against brute-force login attacks. ufw will deny connections if an IP
+# address has attempted to initiate 6 or more connections in the last
+# 30 seconds. See  http://www.debian-administration.org/articles/187
+# for details. Typical usage is:
+- name: Prevent bruteforce attacks on ssh port
+  become: true
+  ufw:
+    rule: limit
+    port: "{{ ansible_port | default(22) }}"
+    proto: tcp
+
+- name: Prevent bruteforce attacks on allowed port
+  become: true
+  ufw:
+    rule: limit
+    port: "{{ item }}"
+    proto: tcp
+  with_items: "{{ firewall_allowed_ports }}"
+
+- name: Enable UFW
+  become: true
+  ufw:
+    state: "enabled"

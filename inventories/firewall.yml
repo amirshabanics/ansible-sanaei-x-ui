@@ -1,0 +1,12 @@
+---
+all:
+  vars:
+    firewall_allowed_ports:
+    # Proxies ports
+      - 8880
+      - 443
+      - 8443
+      - 2087
+      - 2083
+    # Panel ports
+      - 2053

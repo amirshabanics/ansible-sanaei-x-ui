@@ -1,0 +1,14 @@
+all:
+  vars:
+    apt_cache_valid_time: "{{ 24 * 60 * 60 }}"
+    common_packages:
+      - curl
+      - htop
+      - ifstat
+      - vnstat
+      - net-tools
+      - python3-pip
+      - tmux
+      - vim
+      - unzip
+      - git

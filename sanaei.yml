@@ -1,0 +1,65 @@
+---
+- name: Deploy and configure the sanaei
+  hosts: server
+  vars_files:
+    - ./vars.yml
+  tasks:
+    - name: Install app
+      become: true
+      become_user: root
+      shell: "bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh) {{ app_version }}"
+      args:
+        executable: /bin/bash
+      environment:
+        PUBLIC_KEY: "{{ public_key }}"
+        USERNAME: "{{ server_username }}"
+      register: install_app_result
+
+    - name: Install warp
+      become: true
+      become_user: root
+      shell: "bash <(curl -sSL https://raw.githubusercontent.com/hamid-gh98/x-ui-scripts/main/install_warp_proxy.sh)"
+      args:
+        executable: /bin/bash
+      environment:
+        PUBLIC_KEY: "{{ public_key }}"
+        USERNAME: "{{ server_username }}"
+      register: install_app_result
+
+    - name: Install certbot
+      become: true
+      become_user: root
+      apt:
+        name: certbot
+        state: present
+
+    - name: Obtain SSL certificate
+      become: true
+      become_user: root
+      shell: "certbot certonly --standalone --agree-tos --register-unsafely-without-email -d {{ domain }}"
+      register: certbot_result
+
+    - name: Renew SSL certificate (dry-run)
+      become: true
+      become_user: root
+      shell: "certbot renew --dry-run"
+
+    - name: Run x-ui command (first set of inputs)
+      become: true
+      become_user: root
+      expect:
+        command: "x-ui"
+        echo: true
+        responses:
+          - "17"
+          - "{{ warp_account }}"
+
+    - name: Run x-ui command (second set of inputs)
+      become: true
+      become_user: root
+      command: "x-ui"
+      echo: true
+      expect:
+        responses:
+          - "16"
+          - "1"

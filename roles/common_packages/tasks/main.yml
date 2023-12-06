@@ -1,0 +1,7 @@
+---
+- name: Install common packages
+  become: true
+  apt:
+    name: "{{ item }}"
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  with_items: "{{ common_packages }}"
