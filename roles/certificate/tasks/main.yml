@@ -1,0 +1,9 @@
+---
+- name: Certificate the domain
+  become: true
+  ansible.builtin.command: "certbot certonly --standalone --agree-tos --register-unsafely-without-email -d {{ domain }}"
+  args:
+    creates: "/etc/letsencrypt/live/{{ domain }}/privkey.pem"
+- name: Renew certificate
+  become: true
+  ansible.builtin.command: "certbot renew --dry-run"

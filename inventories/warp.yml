@@ -1,0 +1,6 @@
+---
+all:
+  vars:
+    warp_port: 4000
+    warp_token: xxx
+    warp_url: https://raw.githubusercontent.com/hamid-gh98/x-ui-scripts/main/install_warp_proxy.sh

@@ -1,0 +1,9 @@
+---
+- name: Download warp installation
+  get_url:
+    url: "{{ warp_url }}"
+    dest: /tmp/warp.sh
+    mode: 755
+- name: Install warp
+  become: true
+  command: /tmp/warp.sh -y
