@@ -15,23 +15,25 @@
       - "{{ sanaei_xui_username }}"
       - "{{ sanaei_xui_password }}"
       - "{{ sanaei_xui_port }}"
-# implement ban and warp plus comming soon:)
-# - name: Run x-ui command (first set of inputs)
-#   become: true
-#   become_user: root
-#   expect:
-#     command: "x-ui"
-#     echo: true
-#     responses:
-#       - "17"
-#       - "{{ warp_account }}"
-# - name: Run x-ui command (first set of inputs)
-#   become: true
-#   become_user: root
-#   expect:
-#     command: "x-ui"
-#     echo: true
-#     responses:
-#       - "17"
-#       - "{{ warp_account }}"
 
+- name: Setup warp plus
+  become: true
+  expect:
+    command: "x-ui"
+    echo: true
+    responses:
+      - "18" # WARP Management
+      - "2" # Account Type (free, plus, team)
+      - "2" # Change to another WARP+ account
+      - "{{ warp_token }}"
+
+- name: Install Fail2ban
+  become: true
+  expect:
+    command: "x-ui"
+    echo: true
+    responses:
+      - "17" # IP Limit Management
+      - "1" # Install Fail2ban and configure IP Limit
+      - "y"
+      - ""
